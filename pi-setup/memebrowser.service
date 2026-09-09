@@ -1,0 +1,13 @@
+[Unit]
+Description=MemeBrowser kiosk
+After=network.target
+
+[Service]
+User=pi
+# startx runs pi-setup/xinitrc on the framebuffer tied to the touchscreen
+ExecStart=/usr/bin/startx /home/pi/memeBrowser/pi-setup/xinitrc -- -nocursor
+Restart=on-failure
+RestartSec=3
+
+[Install]
+WantedBy=multi-user.target
