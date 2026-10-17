@@ -11,15 +11,23 @@ from pathlib import Path
 LINK_KEYS = ("link", "url")
 DATE_KEYS = ("date",)
 
-# checked in order, first substring match wins. Add to this if TikTok renames things.
-COLLECTION_RULES = [
+# Matched against the *section* name (the key holding the list's parent dict,
+# e.g. "Like List" in "Likes and Favorites.Like List.ItemFavoriteList"), not the
+# whole path -- the 2026 export nests Favorites under a top-level "Likes and
+# Favorites" key, so whole-path matching filed every favorite as a like.
+# Checked in order, first substring match wins. None = not a video, skip it.
+SECTION_RULES = [
+    ("sound", None),      # Favorite Sounds -- music page links, not videos
+    ("effect", None),     # Favorite Effects
+    ("deleted", None),    # Recently Deleted Posts
+    ("repost", "Reposts"),  # before "post": other people's videos you reposted
     ("like", "Likes"),
     ("favorite", "Favorites"),
     ("post", "Posts"),
 ]
 
 # paths containing these are noisy/huge and not "saved" content -- skipped by default
-SKIP_SUBSTRINGS = ("browsing", "search", "hashtag", "share", "comment", "live")
+SKIP_SUBSTRINGS = ("browsing", "watch history", "search", "hashtag", "share", "comment", "live")
 
 
 def _find_ci(d: dict, candidates) -> str | None:
@@ -34,13 +42,15 @@ def _classify(path: str) -> str | None:
     low = path.lower()
     if any(s in low for s in SKIP_SUBSTRINGS):
         return None
-    # your own uploaded videos live under a top-level "Video" key with no
-    # "post" in the path (e.g. Video.Videos.Videos), so check that first
-    if low.startswith("video.") or low.startswith("post."):
-        return "Posts"
-    for substring, label in COLLECTION_RULES:
-        if substring in low:
+    parts = low.split(".")
+    section = parts[-2] if len(parts) >= 2 else low
+    for substring, label in SECTION_RULES:
+        if substring in section:
             return label
+    # older exports keep your own uploads under a top-level "Video" key
+    # (e.g. Video.Videos.Videos) with no "post" anywhere in the path
+    if low.startswith("video."):
+        return "Posts"
     return None
 
 

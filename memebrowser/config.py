@@ -15,4 +15,4 @@ SCREEN_WIDTH = 1280
 SCREEN_HEIGHT = 720
 FULLSCREEN = False  # flip to True on the Pi once the layout is confirmed
 
-COLLECTIONS = ["All", "Likes", "Favorites", "Posts", "Manual"]
+COLLECTIONS = ["All", "Likes", "Favorites", "Posts", "Reposts", "Manual"]

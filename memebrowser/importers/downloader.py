@@ -62,17 +62,21 @@ def download_pending(limit=None, cookies_file=None, cookies_from_browser=None, o
     return results
 
 
+# TikTok thumbnails come down with a generic ".image" extension (they're JPEGs)
+THUMB_EXTS = (".jpg", ".jpeg", ".webp", ".png", ".image")
+
+
 def _find_downloaded_file(media_id, exclude_thumb=False):
     candidates = sorted(config.MEDIA_DIR.glob(f"{media_id}.*"))
     for c in candidates:
-        if exclude_thumb and c.suffix.lower() in (".jpg", ".jpeg", ".png", ".webp"):
+        if exclude_thumb and c.suffix.lower() in THUMB_EXTS:
             continue
         return c
     return None
 
 
 def _find_thumbnail(media_id):
-    for ext in (".jpg", ".jpeg", ".webp", ".png"):
+    for ext in THUMB_EXTS:
         p = config.MEDIA_DIR / f"{media_id}{ext}"
         if p.exists():
             dest = config.THUMB_DIR / f"{media_id}.jpg"
