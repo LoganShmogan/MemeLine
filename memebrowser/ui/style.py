@@ -2,6 +2,8 @@
 # accent, Chakra Petch for headings, Figtree for body text, a muted pastel
 # palette (gold/lavender/green/blue) shared across both sites for tags/icons.
 
+from .. import config
+
 BG = "#000000"
 BG_PANEL = "#111111"
 BG_TILE = "#1a1a1a"
@@ -21,7 +23,7 @@ FONT_BODY = ("Figtree", 14)
 FONT_BODY_BOLD = ("Figtree", 14, "bold")
 FONT_BODY_LARGE = ("Figtree", 22)
 
-TILE_SIZE = 200
+TILE_SIZE = config.THUMB_SIZE
 TOUCH_PAD = 14
 
 

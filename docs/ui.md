@@ -31,17 +31,23 @@ works with a keyboard and mouse. Start it with `python main.py`.
   `on_back`, `on_added`), so screens never import each other.
 
 ### Gallery (gallery.py)
-- A scrollable grid of 200x200 tiles (`style.TILE_SIZE`), 4 columns, newest
-  first. Rows come from `db.get_by_collection()`, which leaves out `failed`
-  items.
-- **Scrolling:** a `Canvas` with a `Frame` inside. Dragging with a finger
-  uses `scan_mark`/`scan_dragto`; there's also a scrollbar.
+- A scrollable grid of 200x200 tiles (`style.TILE_SIZE`), newest first.
+  As many columns as fit the width: 5 in 1280px landscape, 3 in 720px
+  portrait. Rows come from `db.get_by_collection()`, which leaves out
+  `failed` items.
+- **Virtualised:** everything is drawn on one `Canvas`, and only the visible
+  rows plus 2 either side exist at any time. Scrolling draws new rows and
+  deletes old ones. See
+  [architecture.md](architecture.md#a-virtualised-gallery-on-a-single-canvas).
+- **Scrolling:** drag with a finger (`scan_mark`/`scan_dragto`), the
+  scrollbar, or the mouse wheel.
 - **Tile:** the thumbnail, or a coloured glyph if there isn't one (blue ▶
   video, green 🖼 image, gold 📄 text). Below it, the first 28 characters of
-  the title. `pending` items get a small grey "pending" label in the corner.
-  Tapping a tile opens the viewer.
-- Thumbnails are loaded with PIL and kept in `_thumb_cache` so Tk doesn't
-  lose them to garbage collection.
+  the title, trimmed with "…" to fit the tile. `pending` items get a small
+  grey "pending" label in the corner. Tapping a tile (a press that moves less
+  than 10px) opens the viewer.
+- **Back from the viewer** scrolls the gallery to the last item you viewed,
+  even if you used Next/Prev to get there.
 
 ### Viewer (viewer.py)
 - Top bar: **◀ Back**, **‹ Prev**, **Next ›** and the first 60 characters
@@ -61,9 +67,9 @@ works with a keyboard and mouse. Start it with `python main.py`.
 - **Add photo / video:** a file picker. Accepts images
   (`.jpg .jpeg .png .gif .bmp .webp`) and videos
   (`.mp4 .mov .mkv .webm .avi`). It inserts the row first to get an id,
-  copies the file to `data/media/<id><ext>`, then makes a thumbnail: PIL for
-  images, and for videos `ffmpeg` grabs the frame at 1s, if ffmpeg is
-  installed.
+  copies the file to `data/media/<id><ext>`, then makes a 200px thumbnail
+  with `save_thumbnail()`. For videos, `ffmpeg` first grabs the frame at 1s,
+  if ffmpeg is installed.
 - **Add text note:** a text prompt. The note is stored in the row's
   `caption` and also written to `data/media/<id>.txt`.
 - New items go in the `Manual` collection, with `status='manual'`.
@@ -99,7 +105,7 @@ by `TOUCH_PAD` (14px) so buttons are big enough to tap.
 
 | Action | Touch | Mouse / keyboard |
 |---|---|---|
-| Scroll gallery | drag | drag, or the scrollbar (the wheel [doesn't work on Linux](known-issues.md#mouse-wheel-doesnt-scroll-on-linux)) |
+| Scroll gallery | drag | drag, wheel, or the scrollbar |
 | Open item | tap tile | click |
 | Leave fullscreen | n/a | Esc |
 

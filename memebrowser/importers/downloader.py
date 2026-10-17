@@ -9,6 +9,7 @@ downloads of Likes/Favorites are failing with 403/private errors.
 from pathlib import Path
 
 from .. import config, db
+from ..thumbnails import save_thumbnail
 
 
 def download_pending(limit=None, cookies_file=None, cookies_from_browser=None, on_progress=None):
@@ -79,7 +80,13 @@ def _find_thumbnail(media_id):
     for ext in THUMB_EXTS:
         p = config.MEDIA_DIR / f"{media_id}{ext}"
         if p.exists():
+            # keep the full-size cover; the gallery only ever loads the small copy
+            cover = config.COVER_DIR / f"{media_id}.jpg"
+            p.replace(cover)
             dest = config.THUMB_DIR / f"{media_id}.jpg"
-            p.replace(dest)
+            try:
+                save_thumbnail(cover, dest)
+            except Exception:
+                return None
             return dest
     return None

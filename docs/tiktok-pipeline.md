@@ -95,6 +95,7 @@ runs yt-dlp in-process with:
 After each item:
 - **Success:** the media file is `data/media/<id>.<ext>` (`mp4`, or
   `mp3`/`m4a` for photo slideshows). The cover yt-dlp wrote is moved to
+  `data/covers/<id>.jpg` and a 200px copy saved as
   `data/thumbnails/<id>.jpg`, and the row gets `file_path`,
   `thumbnail_path`, `title` (TikTok's description) and `status='downloaded'`.
 - **Any exception:** `status='failed'` and the first 500 characters of the

@@ -8,6 +8,7 @@ from pathlib import Path
 from tkinter import filedialog, simpledialog
 
 from .. import config, db
+from ..thumbnails import save_thumbnail
 from . import style
 
 IMAGE_EXT = {".jpg", ".jpeg", ".png", ".gif", ".bmp", ".webp"}
@@ -74,10 +75,7 @@ class AddMediaFrame(tk.Frame):
         thumb_dest = config.THUMB_DIR / f"{media_id}.jpg"
         try:
             if media_type == "image":
-                from PIL import Image
-                img = Image.open(file_path)
-                img.thumbnail((style.TILE_SIZE, style.TILE_SIZE))
-                img.convert("RGB").save(thumb_dest, "JPEG")
+                save_thumbnail(file_path, thumb_dest)
                 return thumb_dest
             else:  # video: grab a frame with ffmpeg if it's on PATH
                 result = subprocess.run(
@@ -85,6 +83,9 @@ class AddMediaFrame(tk.Frame):
                      "-frames:v", "1", str(thumb_dest)],
                     capture_output=True, timeout=15,
                 )
-                return thumb_dest if result.returncode == 0 and thumb_dest.exists() else None
+                if result.returncode != 0 or not thumb_dest.exists():
+                    return None
+                save_thumbnail(thumb_dest, thumb_dest)
+                return thumb_dest
         except Exception:
             return None

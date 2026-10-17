@@ -13,8 +13,10 @@
   a locked-down kiosk.
 - The 3D-printable enclosure in the repo root: `caseBack.stl`,
   `caseBackv2.stl` (revised back), `caseTop.stl`, `copy of Basic Hinge.stl`
-- **SD card:** the library is about 25.6 GB (25 GB media + 577 MB
-  thumbnails), so use a 64 GB card or larger, or keep `data/` on a USB drive.
+- **SD card:** the library is about 25.6 GB (25 GB media, 577 MB covers,
+  48 MB thumbnails), so use a 64 GB card or larger, or keep `data/` on a USB
+  drive. `data/covers/` isn't used by the UI and can be left behind to save
+  space.
 
 ## OS packages (Raspberry Pi OS Lite)
 
@@ -45,28 +47,26 @@ mkdir -p ~/.local/share/fonts && cp assets/fonts/*.ttf ~/.local/share/fonts/ && 
 ```
 
 ### Getting the library onto the Pi
-Either rerun the import and download on the Pi (slow, but the paths come out
-right), or copy `data/` across from the dev machine.
-
-⚠ If you copy it, the database still points at
-`/home/loganyoung/Documents/Projects/memeBrowser/data/...`, because paths are
-stored absolute. Either put the repo at the same path on the Pi, or rewrite
-the paths after copying:
+Copy `data/` from the dev machine into the repo on the Pi. Paths in the
+database are relative to `data/`, so it works wherever the repo lives:
 
 ```
-sqlite3 data/memebrowser.db "
-UPDATE media SET
-  file_path      = replace(file_path,      '/home/loganyoung/Documents/Projects/memeBrowser', '/home/<user>/memeBrowser'),
-  thumbnail_path = replace(thumbnail_path, '/home/loganyoung/Documents/Projects/memeBrowser', '/home/<user>/memeBrowser');"
+rsync -a --info=progress2 --exclude covers/ data/ <user>@<pi>:memeBrowser/data/
 ```
+
+Or rerun the import and download on the Pi itself, which is much slower.
+
+If you copy an older library whose thumbnails are still full size, run
+`.venv/bin/python scripts/rebuild_thumbnails.py` once.
 
 ## Display configuration
 
 `memebrowser/config.py` currently assumes **1280x720 landscape**, but the
 panel is natively 720x1280 portrait. Either:
 - **Mount it portrait:** set `SCREEN_WIDTH = 720`, `SCREEN_HEIGHT = 1280`.
-  The 4-column grid of 200px tiles is about 880px wide, so `cols` in
-  `gallery.py` would need to drop to 3.
+  The gallery fits 3 columns automatically. The nav bar's six tabs plus
+  "+ Add" need about 740px, so trim `COLLECTIONS` (e.g. drop the empty
+  Posts/Reposts tabs) or the "+ Add" button gets cut off.
 - **Mount it landscape:** rotate the panel in the OS and keep 1280x720. ⚠
   Current Pi OS uses the KMS display driver, which ignores the old
   `display_rotate` / `lcd_rotate` settings. Use the rotation option from

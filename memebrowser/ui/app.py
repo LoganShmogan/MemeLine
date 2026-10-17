@@ -53,11 +53,13 @@ class App(tk.Tk):
         for child in self.content.winfo_children():
             child.destroy()
 
-    def show_gallery(self, collection):
+    def show_gallery(self, collection, focus_id=None):
         self.current_collection = collection
         self._set_active_nav(collection)
         self._clear_content()
-        GalleryFrame(self.content, collection, on_open=self.show_viewer).pack(fill="both", expand=True)
+        GalleryFrame(
+            self.content, collection, on_open=self.show_viewer, focus_id=focus_id,
+        ).pack(fill="both", expand=True)
 
     def show_viewer(self, item):
         items = db.get_by_collection(self.current_collection)
@@ -66,7 +68,7 @@ class App(tk.Tk):
         self._clear_content()
         ViewerFrame(
             self.content, items, index,
-            on_back=lambda: self.show_gallery(self.current_collection),
+            on_back=lambda last: self.show_gallery(self.current_collection, focus_id=last["id"]),
         ).pack(fill="both", expand=True)
 
     def show_add_media(self):

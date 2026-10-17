@@ -43,6 +43,7 @@ main.py                       entry point -> memebrowser.ui.app.main()
 memebrowser/
   config.py                   paths, screen size, fullscreen flag, collection tabs
   db.py                       SQLite schema + every query
+  thumbnails.py               save_thumbnail(): shrink an image to tile size
   importers/
     tiktok_export.py          export JSON -> row dicts (classifies Likes/Favorites/...)
     downloader.py             yt-dlp wrapper: pending rows -> files on disk
@@ -55,13 +56,14 @@ memebrowser/
 scripts/
   import_tiktok.py            CLI for the importer
   download_pending.py         CLI for the downloader (--retry-failed, cookies)
+  rebuild_thumbnails.py       one-off: shrink old full-size thumbnails
 pi-setup/
   xinitrc                     minimal X session that runs the app
   memebrowser.service         systemd unit to boot into it
 assets/fonts/                 Chakra Petch + Figtree (install with fc-cache)
 docs/                         see the table above
 *.stl                         enclosure parts (back, back v2, top, hinge)
-data/                         git-ignored: memebrowser.db, media/, thumbnails/
+data/                         git-ignored: memebrowser.db, media/, thumbnails/, covers/
 ```
 
 ## Status (2026-10-17)
@@ -71,6 +73,8 @@ data/                         git-ignored: memebrowser.db, media/, thumbnails/
   from NZ; the rest were removed or are expired own-Post links. Details in
   [docs/tiktok-pipeline.md](docs/tiktok-pipeline.md#what-failed-and-why-2026-10-runs).
 - **App:** runs on the dev machine. Not yet tried on the Pi or touchscreen.
-- **Before deploying to the Pi**, read [docs/known-issues.md](docs/known-issues.md).
-  The gallery's load time on a full library and the absolute paths in the
-  database both need attention.
+- **Gallery:** only draws what's on screen. "All" (5,840 items) opens in
+  about 0.4 s on the dev machine.
+- **Before deploying to the Pi**, read [docs/raspberry-pi.md](docs/raspberry-pi.md)
+  and [docs/known-issues.md](docs/known-issues.md). The service setup and
+  display rotation are untested.

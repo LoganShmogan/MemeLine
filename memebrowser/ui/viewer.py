@@ -141,7 +141,7 @@ class ViewerFrame(tk.Frame):
 
     def _back(self):
         self._release_player()
-        self.on_back()
+        self.on_back(self._current())  # gallery scrolls back to this item
 
     def _prev(self):
         if self.index > 0:
