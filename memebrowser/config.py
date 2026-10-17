@@ -1,3 +1,7 @@
+"""Paths, screen geometry and collection tabs. Importing this creates data/.
+
+See docs/architecture.md and docs/raspberry-pi.md (display setup).
+"""
 from pathlib import Path
 
 PROJECT_ROOT = Path(__file__).resolve().parent.parent

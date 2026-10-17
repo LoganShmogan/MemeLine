@@ -1,3 +1,6 @@
+"""Full-screen viewer for one item (libVLC video, image, or text) with
+prev/next through the list it was opened from. See docs/ui.md.
+"""
 import tkinter as tk
 from pathlib import Path
 

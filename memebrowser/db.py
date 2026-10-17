@@ -1,3 +1,8 @@
+"""SQLite library: the media table schema and every query in the app.
+
+Rows are returned as plain dicts. Column meanings, the status lifecycle and
+why the schema looks like this are in docs/data-model.md.
+"""
 import sqlite3
 from contextlib import contextmanager
 

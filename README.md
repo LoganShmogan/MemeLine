@@ -1,128 +1,76 @@
 # MemeBrowser
 
-A touchscreen media browser for the Raspberry Pi 3B+ + Pi Touch Display 2.
-Starts with your saved TikTok videos (Likes / Favorites / your own Posts) and
-also lets you drop in your own photos, videos, and text notes.
+A touchscreen media browser for a Raspberry Pi 3B+ with the official Pi
+Touch Display 2, in a 3D-printed case. It holds your saved TikTok videos
+(Likes, Favorites, your own Posts, Reposts), imported from TikTok's
+"Download your data" export, plus photos, videos and text notes you add
+yourself. Everything plays offline from local files.
 
-## Layout
+Python 3.12, Tkinter for the UI, libVLC for playback, yt-dlp for
+downloading, SQLite for the library.
 
-```
-memebrowser/
-  config.py            paths + screen size
-  db.py                sqlite library (one row per media item)
-  importers/
-    tiktok_export.py   parses the TikTok "download your data" json
-    downloader.py       yt-dlp wrapper that fetches the actual video files
-  ui/
-    app.py              main window, nav bar, screen switching
-    gallery.py           scrollable thumbnail grid
-    viewer.py            video (VLC) / image / text viewer with prev/next
-    add_media.py         import your own files or a text note
-scripts/
-  import_tiktok.py      python scripts/import_tiktok.py export.json
-  download_pending.py   python scripts/download_pending.py
-pi-setup/
-  xinitrc                minimal X session that launches the app fullscreen
-  memebrowser.service     systemd unit -> boots straight into it
-```
+## Documentation
 
-## Once your TikTok export lands
+| Doc | What's in it |
+|---|---|
+| [docs/architecture.md](docs/architecture.md) | Components, data flow, and why each technology was chosen |
+| [docs/data-model.md](docs/data-model.md) | Database schema column by column, the status lifecycle, on-disk layout, in-memory data structures and the reasons for each |
+| [docs/tiktok-pipeline.md](docs/tiktok-pipeline.md) | Importing the export, how the parser classifies it, downloading, failure types and what was done about them |
+| [docs/ui.md](docs/ui.md) | Screens, navigation, styling tokens and fonts, input handling |
+| [docs/raspberry-pi.md](docs/raspberry-pi.md) | Hardware, OS packages, display setup, booting into the app |
+| [docs/known-issues.md](docs/known-issues.md) | Current limitations and bugs, ordered by impact |
 
-1. `python scripts/import_tiktok.py path/to/export.json`
-   Walks the export tree, classifies each list of links as Likes /
-   Favorites / Posts (unrecognized lists like watch history are skipped by
-   default -- pass `--include-all` to keep everything), and adds them to the
-   library as `pending`.
-
-2. `python scripts/download_pending.py`
-   Fetches the actual video file for each pending row via yt-dlp.
-
-   **Important:** TikTok's Likes/Favorites lists are private on most
-   accounts, so yt-dlp needs your logged-in session to fetch those specific
-   videos -- your own Posts are usually public and don't need this. If you
-   see 403/private errors:
-   - Install the "Get cookies.txt" extension in your browser, log into
-     tiktok.com, export a `cookies.txt`, then run:
-     `python scripts/download_pending.py --cookies-file cookies.txt`
-   - Or, if running on a machine with a logged-in browser installed:
-     `python scripts/download_pending.py --cookies-from-browser chrome`
-
-   Re-running the script only retries rows still marked `pending`/`failed`,
-   so it's safe to run again after fixing cookies.
-
-3. `python main.py` to view the library.
-
-## Styling
-
-The UI matches the Save Point / loganyoung.foo brand: black background,
-lavender accent (`#b791c2`), Chakra Petch for headings/buttons, Figtree for
-body text, and a shared pastel palette (gold/green/blue) for tags and
-placeholder icons. All of it lives in `memebrowser/ui/style.py`. The two font
-files are bundled in `assets/fonts/` -- install them locally so Tkinter can
-find them by family name:
+## Quick start (dev machine)
 
 ```
-mkdir -p ~/.local/share/fonts
-cp assets/fonts/*.ttf ~/.local/share/fonts/
-fc-cache -f
-```
-
-## Dev machine setup (this repo already has a venv)
-
-```
-python3 -m venv .venv
-source .venv/bin/activate
-pip install -r requirements.txt
-python main.py
-```
-
-## Raspberry Pi OS Lite setup
-
-```
-sudo apt update
-sudo apt install -y python3-venv python3-tk vlc ffmpeg \
-                     xserver-xorg xinit x11-xserver-utils unclutter fontconfig
-
-git clone <this repo> /home/pi/memeBrowser
-cd /home/pi/memeBrowser
 python3 -m venv .venv
 .venv/bin/pip install -r requirements.txt
+mkdir -p ~/.local/share/fonts && cp assets/fonts/*.ttf ~/.local/share/fonts/ && fc-cache -f
 
-mkdir -p ~/.local/share/fonts
-cp assets/fonts/*.ttf ~/.local/share/fonts/
-fc-cache -f
+.venv/bin/python scripts/import_tiktok.py path/to/user_data_tiktok.json
+.venv/bin/python scripts/download_pending.py
+.venv/bin/python main.py
 ```
 
-Copy your TikTok export onto the Pi (or straight into the repo directory)
-and run the two import/download scripts above using `.venv/bin/python`.
+System packages needed: `python3-tk`, `vlc` (libVLC) and, optionally,
+`ffmpeg`. Downloads need yt-dlp's `curl-cffi` extra, which
+`requirements.txt` already includes.
 
-**Boot straight into the app:**
+## Repository layout
 
 ```
-sudo cp pi-setup/memebrowser.service /etc/systemd/system/
-sudo systemctl enable memebrowser.service
+main.py                       entry point -> memebrowser.ui.app.main()
+memebrowser/
+  config.py                   paths, screen size, fullscreen flag, collection tabs
+  db.py                       SQLite schema + every query
+  importers/
+    tiktok_export.py          export JSON -> row dicts (classifies Likes/Favorites/...)
+    downloader.py             yt-dlp wrapper: pending rows -> files on disk
+  ui/
+    app.py                    main window, nav bar, screen switching
+    gallery.py                scrollable thumbnail grid
+    viewer.py                 VLC video / image / text viewer with prev/next
+    add_media.py              add your own files or text notes
+    style.py                  brand colours, fonts, button factory
+scripts/
+  import_tiktok.py            CLI for the importer
+  download_pending.py         CLI for the downloader (--retry-failed, cookies)
+pi-setup/
+  xinitrc                     minimal X session that runs the app
+  memebrowser.service         systemd unit to boot into it
+assets/fonts/                 Chakra Petch + Figtree (install with fc-cache)
+docs/                         see the table above
+*.stl                         enclosure parts (back, back v2, top, hinge)
+data/                         git-ignored: memebrowser.db, media/, thumbnails/
 ```
 
-Before enabling the service, flip `FULLSCREEN = True` in `memebrowser/config.py`
-and confirm `SCREEN_WIDTH`/`SCREEN_HEIGHT` match how you've mounted the panel
-(the official Touch Display 2 is 720x1280 native/portrait -- rotate via
-`display_rotate`/`lcd_rotate` in `/boot/firmware/config.txt` if you're
-mounting it landscape, and match that rotated resolution here).
+## Status (2026-10-17)
 
-## Adding your own media later
-
-The "+ Add" button in the app copies a photo/video into the library (with an
-auto-generated thumbnail), or lets you type a text note. Everything lands in
-the "Manual" collection alongside the TikTok tabs.
-
-## Status so far
-
-- Parser + downloader + db tested against synthetic export data (dedup and
-  collection classification both verified).
-- App launches cleanly and the widget tree builds without errors on this dev
-  machine (X11 via XWayland).
-- **Not yet verified**: actual rendering/touch behavior, and video playback
-  through python-vlc -- this sandbox can't screenshot a Wayland session or
-  drive real touch input, so the first real check needs to happen either
-  with a real TikTok export + real video files, or on the Pi + touchscreen
-  itself.
+- **Library:** 5,840 videos downloaded (4,941 Likes, 899 Favorites), about
+  25 GB. 856 couldn't be downloaded and are hidden. Most are region-locked
+  from NZ; the rest were removed or are expired own-Post links. Details in
+  [docs/tiktok-pipeline.md](docs/tiktok-pipeline.md#what-failed-and-why-2026-10-runs).
+- **App:** runs on the dev machine. Not yet tried on the Pi or touchscreen.
+- **Before deploying to the Pi**, read [docs/known-issues.md](docs/known-issues.md).
+  The gallery's load time on a full library and the absolute paths in the
+  database both need attention.

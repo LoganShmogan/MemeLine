@@ -1,3 +1,4 @@
+"""Scrollable thumbnail grid for one collection. See docs/ui.md."""
 import tkinter as tk
 from pathlib import Path
 

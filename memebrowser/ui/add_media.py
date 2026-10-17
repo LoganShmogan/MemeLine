@@ -1,3 +1,6 @@
+"""Add your own photo/video (copied into data/media) or a text note to the
+Manual collection. See docs/ui.md.
+"""
 import shutil
 import subprocess
 import tkinter as tk

@@ -1,3 +1,6 @@
+"""Main window: nav bar of collection tabs plus one content frame that is
+rebuilt for each screen (gallery, viewer, add media). See docs/ui.md.
+"""
 import tkinter as tk
 
 from .. import config, db
