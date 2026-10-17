@@ -85,6 +85,24 @@ def get_pending():
         return [dict(r) for r in rows]
 
 
+# failure captions that won't change on retry: removed videos (10231/10240).
+# Posts are skipped too -- the export gives signed CDN links that expire
+# before they can be fetched.
+PERMANENT_FAILURES = ("%status code 10231%", "%status code 10240%")
+
+
+def requeue_failed() -> int:
+    """Flip retryable 'failed' rows back to 'pending'. Returns how many."""
+    clause = " AND ".join("caption NOT LIKE ?" for _ in PERMANENT_FAILURES)
+    with connect() as conn:
+        cur = conn.execute(
+            f"UPDATE media SET status = 'pending', caption = NULL "
+            f"WHERE status = 'failed' AND collection != 'Posts' AND {clause}",
+            PERMANENT_FAILURES,
+        )
+        return cur.rowcount
+
+
 def update_media(media_id: int, **fields):
     if not fields:
         return

@@ -16,9 +16,13 @@ def main():
                      help="Netscape cookies.txt exported while logged into tiktok.com (needed for private Likes/Favorites)")
     ap.add_argument("--cookies-from-browser", default=None,
                      help="e.g. chrome, firefox -- read cookies from a browser installed on this machine")
+    ap.add_argument("--retry-failed", action="store_true",
+                     help="Re-queue previously failed downloads first (skips removed videos and expired Post links)")
     args = ap.parse_args()
 
     db.init_db()
+    if args.retry_failed:
+        print(f"Re-queued {db.requeue_failed()} failed item(s).")
     pending_count = len(db.get_pending())
     if pending_count == 0:
         print("Nothing pending. Run scripts/import_tiktok.py first.")
