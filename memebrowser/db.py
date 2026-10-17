@@ -69,11 +69,16 @@ def insert_media(item: dict) -> int | None:
 
 def get_by_collection(collection: str):
     with connect() as conn:
+        # failed rows are unplayable (removed / region-blocked) -- keep them in
+        # the DB so --retry-failed can find them, but don't show dead tiles
         if collection == "All":
-            rows = conn.execute("SELECT * FROM media ORDER BY date_original DESC").fetchall()
+            rows = conn.execute(
+                "SELECT * FROM media WHERE status != 'failed' ORDER BY date_original DESC"
+            ).fetchall()
         else:
             rows = conn.execute(
-                "SELECT * FROM media WHERE collection = ? ORDER BY date_original DESC",
+                "SELECT * FROM media WHERE collection = ? AND status != 'failed' "
+                "ORDER BY date_original DESC",
                 (collection,),
             ).fetchall()
         return [dict(r) for r in rows]
