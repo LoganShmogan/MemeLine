@@ -38,8 +38,12 @@ sudo apt install -y python3-venv python3-tk vlc ffmpeg \
 
 ## App install
 
+The repo is private, so the Pi needs GitHub credentials to clone it. The
+easiest way is `sudo apt install gh && gh auth login`, or use a personal
+access token as the password when git asks.
+
 ```
-git clone <repo> ~/memeBrowser
+git clone https://github.com/LoganShmogan/memeBrowser.git ~/memeBrowser
 cd ~/memeBrowser
 python3 -m venv .venv
 .venv/bin/pip install -r requirements.txt
