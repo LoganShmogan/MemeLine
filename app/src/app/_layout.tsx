@@ -1,0 +1,56 @@
+import { useFonts } from 'expo-font';
+import { DarkTheme, Stack, ThemeProvider } from 'expo-router';
+import * as SplashScreen from 'expo-splash-screen';
+import { SQLiteProvider } from 'expo-sqlite';
+import { StatusBar } from 'expo-status-bar';
+import { useEffect } from 'react';
+
+import { Colors, Fonts } from '@/constants/theme';
+import { migrate } from '@/db/schema';
+
+SplashScreen.preventAutoHideAsync();
+
+const theme = {
+  ...DarkTheme,
+  colors: {
+    ...DarkTheme.colors,
+    primary: Colors.accent,
+    background: Colors.background,
+    card: Colors.background,
+    text: Colors.text,
+    border: Colors.border,
+  },
+};
+
+export default function RootLayout() {
+  const [fontsLoaded] = useFonts({
+    [Fonts.heading]: require('../../assets/fonts/ChakraPetch-Bold.ttf'),
+    [Fonts.body]: require('../../assets/fonts/Figtree-Regular.ttf'),
+    [Fonts.bodyBold]: require('../../assets/fonts/Figtree-Bold.ttf'),
+  });
+
+  useEffect(() => {
+    if (fontsLoaded) SplashScreen.hideAsync();
+  }, [fontsLoaded]);
+
+  if (!fontsLoaded) return null;
+
+  return (
+    <SQLiteProvider databaseName="memebrowser.db" onInit={migrate}>
+      <ThemeProvider value={theme}>
+        <StatusBar style="light" />
+        <Stack
+          screenOptions={{
+            headerTintColor: Colors.accent,
+            headerTitleStyle: { fontFamily: Fonts.heading, color: Colors.text },
+            contentStyle: { backgroundColor: Colors.background },
+          }}>
+          <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+          <Stack.Screen name="media/[id]" options={{ title: '' }} />
+          <Stack.Screen name="folder/[id]" options={{ title: '' }} />
+          <Stack.Screen name="add" options={{ title: 'Add', presentation: 'modal' }} />
+        </Stack>
+      </ThemeProvider>
+    </SQLiteProvider>
+  );
+}

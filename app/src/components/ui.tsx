@@ -1,0 +1,110 @@
+/** Small branded building blocks shared by every screen. */
+import { Pressable, StyleSheet, Text, TextInput, type TextInputProps, View } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
+
+import { Colors, Fonts, Spacing } from '@/constants/theme';
+
+/** Top-of-tab title bar with an optional action on the right. */
+export function ScreenHeader({ title, action }: { title: string; action?: React.ReactNode }) {
+  return (
+    <SafeAreaView edges={['top']} style={styles.header}>
+      <Text style={styles.headerTitle}>{title}</Text>
+      {action}
+      <View style={styles.rule} />
+    </SafeAreaView>
+  );
+}
+
+export function Button({
+  label,
+  onPress,
+  variant = 'primary',
+  disabled,
+}: {
+  label: string;
+  onPress: () => void;
+  variant?: 'primary' | 'outline' | 'danger';
+  disabled?: boolean;
+}) {
+  return (
+    <Pressable
+      onPress={onPress}
+      disabled={disabled}
+      style={({ pressed }) => [
+        styles.button,
+        variant === 'primary' && { backgroundColor: Colors.accent },
+        variant === 'outline' && { borderColor: Colors.accent, borderWidth: 1 },
+        variant === 'danger' && { borderColor: Colors.danger, borderWidth: 1 },
+        (pressed || disabled) && { opacity: 0.6 },
+      ]}>
+      <Text
+        style={[
+          styles.buttonLabel,
+          { color: variant === 'primary' ? Colors.background : variant === 'danger' ? Colors.danger : Colors.accent },
+        ]}>
+        {label}
+      </Text>
+    </Pressable>
+  );
+}
+
+export function Input(props: TextInputProps) {
+  return (
+    <TextInput
+      placeholderTextColor={Colors.textSecondary}
+      selectionColor={Colors.accent}
+      {...props}
+      style={[styles.input, props.style]}
+    />
+  );
+}
+
+export function EmptyState({ title, hint }: { title: string; hint: string }) {
+  return (
+    <View style={styles.empty}>
+      <Text style={styles.emptyTitle}>{title}</Text>
+      <Text style={styles.emptyHint}>{hint}</Text>
+    </View>
+  );
+}
+
+const styles = StyleSheet.create({
+  header: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingHorizontal: Spacing.three,
+    paddingBottom: Spacing.two,
+    backgroundColor: Colors.background,
+  },
+  headerTitle: { fontFamily: Fonts.heading, fontSize: 28, color: Colors.text },
+  rule: {
+    position: 'absolute',
+    left: Spacing.three,
+    right: Spacing.three,
+    bottom: 0,
+    height: StyleSheet.hairlineWidth,
+    backgroundColor: Colors.accent,
+  },
+  button: {
+    paddingHorizontal: Spacing.three,
+    paddingVertical: Spacing.two + 2,
+    borderRadius: 6,
+    alignItems: 'center',
+  },
+  buttonLabel: { fontFamily: Fonts.heading, fontSize: 15, letterSpacing: 0.5 },
+  input: {
+    fontFamily: Fonts.body,
+    fontSize: 16,
+    color: Colors.text,
+    backgroundColor: Colors.surface,
+    borderColor: Colors.border,
+    borderWidth: 1,
+    borderRadius: 6,
+    paddingHorizontal: Spacing.three,
+    paddingVertical: Spacing.two + 2,
+  },
+  empty: { alignItems: 'center', padding: Spacing.five, gap: Spacing.two },
+  emptyTitle: { fontFamily: Fonts.heading, fontSize: 20, color: Colors.text },
+  emptyHint: { fontFamily: Fonts.body, fontSize: 15, color: Colors.textSecondary, textAlign: 'center' },
+});
