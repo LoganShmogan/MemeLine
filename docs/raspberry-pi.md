@@ -43,8 +43,8 @@ easiest way is `sudo apt install gh && gh auth login`, or use a personal
 access token as the password when git asks.
 
 ```
-git clone https://github.com/LoganShmogan/memeBrowser.git ~/memeBrowser
-cd ~/memeBrowser
+git clone https://github.com/LoganShmogan/MemeLine.git ~/MemeLine
+cd ~/MemeLine
 python3 -m venv .venv
 .venv/bin/pip install -r requirements.txt
 mkdir -p ~/.local/share/fonts && cp assets/fonts/*.ttf ~/.local/share/fonts/ && fc-cache -f
@@ -55,7 +55,7 @@ Copy `data/` from the dev machine into the repo on the Pi. Paths in the
 database are relative to `data/`, so it works wherever the repo lives:
 
 ```
-rsync -a --info=progress2 --exclude covers/ data/ <user>@<pi>:memeBrowser/data/
+rsync -a --info=progress2 --exclude covers/ data/ <user>@<pi>:MemeLine/data/
 ```
 
 Or rerun the import and download on the Pi itself, which is much slower.
@@ -65,7 +65,7 @@ If you copy an older library whose thumbnails are still full size, run
 
 ## Display configuration
 
-`memebrowser/config.py` currently assumes **1280x720 landscape**, but the
+`memeline/config.py` currently assumes **1280x720 landscape**, but the
 panel is natively 720x1280 portrait. Either:
 - **Mount it portrait:** set `SCREEN_WIDTH = 720`, `SCREEN_HEIGHT = 1280`.
   The gallery fits 3 columns automatically. The nav bar's six tabs plus
@@ -82,21 +82,21 @@ Then set `FULLSCREEN = True`.
 
 ## Boot straight into the app
 
-`pi-setup/memebrowser.service` runs `startx pi-setup/xinitrc -- -nocursor`
+`pi-setup/memeline.service` runs `startx pi-setup/xinitrc -- -nocursor`
 at boot. `xinitrc` turns off blanking and DPMS, starts `unclutter`, and
 `exec`s `.venv/bin/python main.py` as the only X client. If the app exits
 with an error, systemd restarts it after 3 seconds.
 
 ```
-sudo cp pi-setup/memebrowser.service /etc/systemd/system/
+sudo cp pi-setup/memeline.service /etc/systemd/system/
 sudo systemctl daemon-reload
-sudo systemctl enable --now memebrowser.service
-journalctl -u memebrowser -f        # logs
+sudo systemctl enable --now memeline.service
+journalctl -u memeline -f        # logs
 ```
 
 ⚠ Things to check first:
 - **User and paths.** The unit and `xinitrc` hard-code the user `pi` and
-  `/home/pi/memeBrowser`. Pi OS images since 2022 have no default `pi`
+  `/home/pi/MemeLine`. Pi OS images since 2022 have no default `pi`
   user; you choose a username in Raspberry Pi Imager. Change `User=` and both
   paths to match.
 - **Starting X from a service.** Xorg's wrapper normally only lets a user
@@ -109,8 +109,8 @@ journalctl -u memebrowser -f        # logs
 ## Updating
 
 ```
-cd ~/memeBrowser && git pull && .venv/bin/pip install -r requirements.txt
-sudo systemctl restart memebrowser
+cd ~/MemeLine && git pull && .venv/bin/pip install -r requirements.txt
+sudo systemctl restart memeline
 ```
 
 TikTok breaks yt-dlp from time to time. If downloads start failing across

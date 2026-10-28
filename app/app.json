@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "Memeline",
+    "name": "MemeLine",
     "slug": "memeline",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -8,12 +8,12 @@
     "scheme": "memeline",
     "userInterfaceStyle": "dark",
     "ios": {
-      "icon": "./assets/expo.icon",
+      "icon": "./assets/images/icon.png",
       "bundleIdentifier": "cc.savepoint.memeline"
     },
     "android": {
       "adaptiveIcon": {
-        "backgroundColor": "#000000",
+        "backgroundColor": "#050805",
         "foregroundImage": "./assets/images/android-icon-foreground.png",
         "backgroundImage": "./assets/images/android-icon-background.png",
         "monochromeImage": "./assets/images/android-icon-monochrome.png"
@@ -30,9 +30,9 @@
       [
         "expo-splash-screen",
         {
-          "backgroundColor": "#000000",
+          "backgroundColor": "#050805",
           "image": "./assets/images/splash-icon.png",
-          "imageWidth": 76
+          "imageWidth": 140
         }
       ],
       "expo-sqlite",
@@ -40,7 +40,7 @@
       [
         "expo-image-picker",
         {
-          "photosPermission": "Memeline needs your photos so you can add memes to your library.",
+          "photosPermission": "MemeLine needs your photos so you can add memes to your library.",
           "cameraPermission": false,
           "microphonePermission": false
         }
@@ -50,6 +50,6 @@
       "typedRoutes": true,
       "reactCompiler": true
     },
-    "backgroundColor": "#000000"
+    "backgroundColor": "#050805"
   }
 }

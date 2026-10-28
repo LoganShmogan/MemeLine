@@ -13,7 +13,7 @@ from .viewer import ViewerFrame
 class App(tk.Tk):
     def __init__(self):
         super().__init__()
-        self.title("MemeBrowser")
+        self.title("MemeLine")
         self.configure(bg=style.BG)
         self.geometry(f"{config.SCREEN_WIDTH}x{config.SCREEN_HEIGHT}")
         if config.FULLSCREEN:

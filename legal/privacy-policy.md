@@ -1,16 +1,16 @@
-# Memeline Privacy Policy
+# MemeLine Privacy Policy
 
 **Effective date:** [TODO: date of publication]
 
-Memeline (the website and the iOS and Android apps) is made by **Save Point Limited**, a company registered in
+MemeLine (the website and the iOS and Android apps) is made by **Save Point Limited**, a company registered in
 New Zealand ("Save Point", "we", "us"). This policy explains what
-information Memeline handles, why, and what control you have over it. We
+information MemeLine handles, why, and what control you have over it. We
 follow the New Zealand Privacy Act 2020, and give the rights below to
-everyone who uses Memeline wherever they live.
+everyone who uses MemeLine wherever they live.
 
 ## The short version
 
-- Anyone can browse Memeline's public posts, threads and meme timeline
+- Anyone can browse MemeLine's public posts, threads and meme timeline
   without an account.
 - To post, vote, comment or keep a library, you sign in with Apple or
   Google. Your **library** (the memes you save, your folders and
@@ -31,24 +31,24 @@ When you sign in, we collect:
 | Your library: the images, videos, links and notes you save, plus folders, favourites and meme tags | You | To show your library to you on the website and all your devices |
 | Your public posts (images, videos, captions), comments, and when you made them | You | To show them to other people |
 | Your votes | You | To rank posts. Other users see vote totals, not who voted |
-| Reports you make, people you block, and moderation actions on your account | You and our moderators | To keep Memeline safe and enforce the [Community Guidelines](community-guidelines.md) |
+| Reports you make, people you block, and moderation actions on your account | You and our moderators | To keep MemeLine safe and enforce the [Community Guidelines](community-guidelines.md) |
 
 Your library is private: only you can see it. Our staff don't access it,
 except to keep the service running, to investigate a report of illegal
 content, or where the law requires it.
 
-When you add photos or videos from your phone, Memeline only reads the
+When you add photos or videos from your phone, MemeLine only reads the
 items you pick.
 
 Our service providers also process technical information such as your IP
 address, browser and device type, so they can sign you in securely and
-protect the service from abuse. The Memeline website stores a sign-in
+protect the service from abuse. The MemeLine website stores a sign-in
 token in your browser so you stay signed in. It doesn't use advertising or
 analytics cookies.
 
 ## Who we share information with
 
-- **Other Memeline users** see your display name and your posts. Don't post
+- **Other MemeLine users** see your display name and your posts. Don't post
   anything you want to keep private.
 - **Google Firebase** (Firebase Authentication, Cloud Firestore and Cloud
   Storage) stores accounts, libraries and posts for us. Data is stored in [TODO: Firestore region,
@@ -88,7 +88,7 @@ to the [Office of the Privacy Commissioner](https://www.privacy.org.nz).
 
 ## Children
 
-Memeline is not for children under 13. You must be at least 13 to create
+MemeLine is not for children under 13. You must be at least 13 to create
 an account, or older if your country's law requires it. If we learn that a
 child under 13 has created an account, we'll delete it.
 

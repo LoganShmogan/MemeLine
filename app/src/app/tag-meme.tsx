@@ -88,5 +88,10 @@ const styles = StyleSheet.create({
   rowOn: { borderColor: Colors.accent },
   name: { fontFamily: Fonts.bodyBold, fontSize: 16, color: Colors.text },
   meta: { fontFamily: Fonts.body, fontSize: 13, color: Colors.textSecondary },
-  check: { fontFamily: Fonts.heading, fontSize: 22, color: Colors.textSecondary },
+  check: {
+    fontFamily: Fonts.heading,
+    textTransform: 'uppercase',
+    fontSize: 22,
+    color: Colors.textSecondary,
+  },
 });

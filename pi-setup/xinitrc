@@ -1,10 +1,10 @@
 #!/bin/sh
 # Minimal X session for Pi OS Lite: no window manager, no desktop -- just
-# turn off screen blanking/cursor and launch MemeBrowser fullscreen.
+# turn off screen blanking/cursor and launch MemeLine fullscreen.
 xset s off
 xset -dpms
 xset s noblank
 unclutter -idle 1 -root &
 
-cd /home/pi/memeBrowser
-exec /home/pi/memeBrowser/.venv/bin/python main.py
+cd /home/pi/MemeLine
+exec /home/pi/MemeLine/.venv/bin/python main.py

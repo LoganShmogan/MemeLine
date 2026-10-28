@@ -6,6 +6,7 @@ import * as WebBrowser from 'expo-web-browser';
 import { useCallback, useEffect, useState } from 'react';
 import { Alert, Pressable, ScrollView, StyleSheet, Text, useWindowDimensions, View } from 'react-native';
 
+import { HitmarkerFlash } from '@/components/hitmarker';
 import { Button, Chip } from '@/components/ui';
 import { Colors, Fonts, Spacing } from '@/constants/theme';
 import {
@@ -35,6 +36,8 @@ export default function ViewerScreen() {
   const [folders, setFolders] = useState<Folder[]>([]);
   const [memberOf, setMemberOf] = useState<Set<number>>(new Set());
   const [memes, setMemes] = useState<Meme[]>([]);
+  // bumped on every favourite, to fire the hitmarker
+  const [hits, setHits] = useState(0);
   const item = items[index];
 
   useEffect(() => {
@@ -70,6 +73,7 @@ export default function ViewerScreen() {
     const next = item.favorite === 0;
     await setFavorite(db, item.id, next);
     patch({ favorite: next ? 1 : 0 });
+    if (next) setHits((h) => h + 1);
   }
 
   async function toggleFolder(folderId: number) {
@@ -111,7 +115,10 @@ export default function ViewerScreen() {
         }}
       />
       <ScrollView contentContainerStyle={{ paddingBottom: Spacing.six }}>
-        <MediaView key={item.id} item={item} />
+        <View>
+          <MediaView key={item.id} item={item} />
+          <HitmarkerFlash trigger={hits} />
+        </View>
 
         <View style={styles.nav}>
           <Button label="‹ Prev" variant="outline" disabled={index <= 0} onPress={() => setIndex(index - 1)} />
@@ -232,7 +239,12 @@ const styles = StyleSheet.create({
   section: { paddingHorizontal: Spacing.three, paddingTop: Spacing.four, gap: Spacing.two },
   title: { fontFamily: Fonts.bodyBold, fontSize: 18, color: Colors.text },
   meta: { fontFamily: Fonts.body, fontSize: 14, color: Colors.textSecondary },
-  heading: { fontFamily: Fonts.heading, fontSize: 18, color: Colors.accent },
+  heading: {
+    fontFamily: Fonts.heading,
+    textTransform: 'uppercase',
+    fontSize: 18,
+    color: Colors.accent,
+  },
   chips: { flexDirection: 'row', flexWrap: 'wrap', gap: Spacing.two },
   noteBox: {
     margin: Spacing.three,
@@ -242,5 +254,5 @@ const styles = StyleSheet.create({
     gap: Spacing.three,
   },
   note: { fontFamily: Fonts.body, fontSize: 18, lineHeight: 26, color: Colors.text },
-  link: { fontFamily: Fonts.body, fontSize: 15, color: Colors.green },
+  link: { fontFamily: Fonts.body, fontSize: 15, color: Colors.orange },
 });

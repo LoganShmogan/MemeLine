@@ -1,4 +1,4 @@
-# Memeline legal documents
+# MemeLine legal documents
 
 - [privacy-policy.md](privacy-policy.md)
 - [terms-of-use.md](terms-of-use.md)

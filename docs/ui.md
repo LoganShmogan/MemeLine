@@ -1,6 +1,6 @@
 # User interface
 
-A Tkinter app (`memebrowser/ui/`) built for a 7" touchscreen, which also
+A Tkinter app (`memeline/ui/`) built for a 7" touchscreen, which also
 works with a keyboard and mouse. Start it with `python main.py`.
 
 ## Screens

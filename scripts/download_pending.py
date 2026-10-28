@@ -5,8 +5,8 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
-from memebrowser import db
-from memebrowser.importers import downloader
+from memeline import db
+from memeline.importers import downloader
 
 
 def main():

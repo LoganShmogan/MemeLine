@@ -1,11 +1,11 @@
 [Unit]
-Description=MemeBrowser kiosk
+Description=MemeLine kiosk
 After=network.target
 
 [Service]
 User=pi
 # startx runs pi-setup/xinitrc on the framebuffer tied to the touchscreen
-ExecStart=/usr/bin/startx /home/pi/memeBrowser/pi-setup/xinitrc -- -nocursor
+ExecStart=/usr/bin/startx /home/pi/MemeLine/pi-setup/xinitrc -- -nocursor
 Restart=on-failure
 RestartSec=3
 

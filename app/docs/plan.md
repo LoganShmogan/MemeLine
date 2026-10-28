@@ -1,6 +1,6 @@
-# Memeline: website + apps plan
+# MemeLine: website + apps plan
 
-Memeline is becoming a community site, a bit like Reddit. The website
+MemeLine is becoming a community site, a bit like Reddit. The website
 comes first, with iOS and Android apps built from the same code. People
 post memes publicly, vote on them and comment. Every post can link to a
 meme on the timeline. Each user's library syncs to their account.

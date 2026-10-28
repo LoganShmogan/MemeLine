@@ -51,10 +51,21 @@ export default function EventScreen() {
 
 const styles = StyleSheet.create({
   page: { padding: Spacing.three, gap: Spacing.two, paddingBottom: Spacing.six },
-  title: { fontFamily: Fonts.heading, fontSize: 28, color: Colors.blue },
+  title: {
+    fontFamily: Fonts.heading,
+    textTransform: 'uppercase',
+    fontSize: 28,
+    color: Colors.cyan,
+  },
   meta: { fontFamily: Fonts.body, fontSize: 14, color: Colors.textSecondary },
   summary: { fontFamily: Fonts.body, fontSize: 16, lineHeight: 23, color: Colors.text },
-  heading: { fontFamily: Fonts.heading, fontSize: 18, color: Colors.accent, marginTop: Spacing.three },
+  heading: {
+    fontFamily: Fonts.heading,
+    textTransform: 'uppercase',
+    fontSize: 18,
+    color: Colors.accent,
+    marginTop: Spacing.three,
+  },
   meme: {
     padding: Spacing.three,
     backgroundColor: Colors.surface,

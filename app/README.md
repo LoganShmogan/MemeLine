@@ -1,6 +1,6 @@
-# Memeline
+# MemeLine
 
-Memeline, by Save Point Limited: Expo + React Native, targeting the iOS
+MemeLine, by Save Point Limited: Expo + React Native, targeting the iOS
 App Store and Google Play. It replaces the Python/Tkinter Pi app in the repo
 root, which is now legacy.
 

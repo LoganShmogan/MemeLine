@@ -12,8 +12,8 @@ sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
 from PIL import Image
 
-from memebrowser import config, db
-from memebrowser.thumbnails import save_thumbnail
+from memeline import config, db
+from memeline.thumbnails import save_thumbnail
 
 
 def main():

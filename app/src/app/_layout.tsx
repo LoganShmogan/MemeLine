@@ -30,9 +30,9 @@ const theme = {
 
 export default function RootLayout() {
   const [fontsLoaded] = useFonts({
-    [Fonts.heading]: require('../../assets/fonts/ChakraPetch-Bold.ttf'),
-    [Fonts.body]: require('../../assets/fonts/Figtree-Regular.ttf'),
-    [Fonts.bodyBold]: require('../../assets/fonts/Figtree-Bold.ttf'),
+    [Fonts.heading]: require('../../assets/fonts/Anton-Regular.ttf'),
+    [Fonts.body]: require('../../assets/fonts/Rajdhani-Medium.ttf'),
+    [Fonts.bodyBold]: require('../../assets/fonts/Rajdhani-Bold.ttf'),
   });
 
   useEffect(() => {
@@ -49,6 +49,7 @@ export default function RootLayout() {
           screenOptions={{
             headerTintColor: Colors.accent,
             headerTitleStyle: { fontFamily: Fonts.heading, color: Colors.text },
+            headerStyle: { backgroundColor: Colors.background },
             contentStyle: { backgroundColor: Colors.background },
           }}>
           <Stack.Screen name="(tabs)" options={{ headerShown: false }} />

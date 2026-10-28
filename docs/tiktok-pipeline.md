@@ -32,7 +32,7 @@ Output:
 
 ### How the parser works
 
-`memebrowser/importers/tiktok_export.py` doesn't assume a schema. It:
+`memeline/importers/tiktok_export.py` doesn't assume a schema. It:
 
 1. Walks the whole JSON tree recursively, building a dotted path for every
    node (`Likes and Favorites.Like List.ItemFavoriteList`).
@@ -86,7 +86,7 @@ change.
 
 ## 3. Download: `download_pending.py`
 
-`memebrowser/importers/downloader.py` loops over every `pending` row and
+`memeline/importers/downloader.py` loops over every `pending` row and
 runs yt-dlp in-process with:
 - `outtmpl = data/media/<id>.%(ext)s`
 - `format = "mp4/best"`

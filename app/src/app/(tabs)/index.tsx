@@ -13,7 +13,7 @@ export default function LibraryScreen() {
         title="Library"
         action={
           <View style={{ flexDirection: 'row', alignItems: 'center', gap: Spacing.three }}>
-            <Pressable onPress={() => router.push('/about')} hitSlop={12} accessibilityLabel="About Memeline">
+            <Pressable onPress={() => router.push('/about')} hitSlop={12} accessibilityLabel="About MemeLine">
               <Text style={{ fontSize: 22, color: Colors.textSecondary }}>ⓘ</Text>
             </Pressable>
             <Button label="+ Add" onPress={() => router.push('/add')} />

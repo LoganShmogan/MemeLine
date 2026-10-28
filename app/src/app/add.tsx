@@ -127,7 +127,12 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.surface,
     borderRadius: 8,
   },
-  title: { fontFamily: Fonts.heading, fontSize: 18, color: Colors.accent },
+  title: {
+    fontFamily: Fonts.heading,
+    textTransform: 'uppercase',
+    fontSize: 18,
+    color: Colors.accent,
+  },
   hint: { fontFamily: Fonts.body, fontSize: 14, color: Colors.textSecondary },
   busy: { flex: 1, alignItems: 'center', justifyContent: 'center', gap: Spacing.three },
 });

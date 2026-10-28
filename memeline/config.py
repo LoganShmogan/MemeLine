@@ -9,7 +9,7 @@ DATA_DIR = PROJECT_ROOT / "data"
 MEDIA_DIR = DATA_DIR / "media"
 THUMB_DIR = DATA_DIR / "thumbnails"
 COVER_DIR = DATA_DIR / "covers"  # full-size TikTok cover art, kept for later use
-DB_PATH = DATA_DIR / "memebrowser.db"
+DB_PATH = DATA_DIR / "memeline.db"
 
 for _d in (DATA_DIR, MEDIA_DIR, THUMB_DIR, COVER_DIR):
     _d.mkdir(parents=True, exist_ok=True)

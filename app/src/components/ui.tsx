@@ -2,7 +2,7 @@
 import { Pressable, StyleSheet, Text, TextInput, type TextInputProps, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-import { Colors, Fonts, Spacing } from '@/constants/theme';
+import { Colors, Fonts, glow, Spacing } from '@/constants/theme';
 
 /** Top-of-tab title bar with an optional action on the right. */
 export function ScreenHeader({ title, action }: { title: string; action?: React.ReactNode }) {
@@ -86,13 +86,19 @@ const styles = StyleSheet.create({
     paddingBottom: Spacing.two,
     backgroundColor: Colors.background,
   },
-  headerTitle: { fontFamily: Fonts.heading, fontSize: 28, color: Colors.text },
+  headerTitle: {
+    fontFamily: Fonts.heading,
+    textTransform: 'uppercase',
+    fontSize: 30,
+    color: Colors.text,
+    ...glow(),
+  },
   rule: {
     position: 'absolute',
     left: Spacing.three,
     right: Spacing.three,
     bottom: 0,
-    height: StyleSheet.hairlineWidth,
+    height: 2,
     backgroundColor: Colors.accent,
   },
   button: {
@@ -101,7 +107,12 @@ const styles = StyleSheet.create({
     borderRadius: 6,
     alignItems: 'center',
   },
-  buttonLabel: { fontFamily: Fonts.heading, fontSize: 15, letterSpacing: 0.5 },
+  buttonLabel: {
+    fontFamily: Fonts.heading,
+    textTransform: 'uppercase',
+    fontSize: 16,
+    letterSpacing: 1,
+  },
   chip: {
     borderColor: Colors.accent,
     borderWidth: 1,
@@ -123,6 +134,16 @@ const styles = StyleSheet.create({
     paddingVertical: Spacing.two + 2,
   },
   empty: { alignItems: 'center', padding: Spacing.five, gap: Spacing.two },
-  emptyTitle: { fontFamily: Fonts.heading, fontSize: 20, color: Colors.text },
-  emptyHint: { fontFamily: Fonts.body, fontSize: 15, color: Colors.textSecondary, textAlign: 'center' },
+  emptyTitle: {
+    fontFamily: Fonts.heading,
+    textTransform: 'uppercase',
+    fontSize: 20,
+    color: Colors.text,
+  },
+  emptyHint: {
+    fontFamily: Fonts.body,
+    fontSize: 15,
+    color: Colors.textSecondary,
+    textAlign: 'center',
+  },
 });

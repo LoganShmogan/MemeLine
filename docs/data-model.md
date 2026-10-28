@@ -1,10 +1,10 @@
 # Data model
 
-Everything MemeBrowser knows lives in two places under `data/` (git-ignored):
+Everything MemeLine knows lives in two places under `data/` (git-ignored):
 
 ```
 data/
-  memebrowser.db         SQLite database: one row per library item
+  memeline.db         SQLite database: one row per library item
   media/<id>.<ext>       the media file itself (mp4, m4a, mp3, jpg, txt, ...)
   thumbnails/<id>.jpg    cover shrunk to fit 200x200 (config.THUMB_SIZE): what the gallery loads
   covers/<id>.jpg        TikTok's full-size cover art, kept but not used by the UI yet
@@ -16,7 +16,7 @@ the path is always derived from the id.
 
 ## The `media` table
 
-Defined in `memebrowser/db.py` (`SCHEMA`), created by `db.init_db()`, which
+Defined in `memeline/db.py` (`SCHEMA`), created by `db.init_db()`, which
 every entry point calls on startup.
 
 | Column | Type | Null? | Meaning |
@@ -57,7 +57,7 @@ and converted at the edge of `db.py`:
   idempotent and cheap, so it runs on every start.
 
 Why relative: the dev machine stores the repo at
-`/home/loganyoung/Documents/Projects/memeBrowser`, but the Pi won't. With
+`/home/loganyoung/Documents/Projects/MemeLine`, but the Pi won't. With
 absolute paths, copying `data/` across left every item showing "Not
 downloaded yet".
 
@@ -137,7 +137,7 @@ The patterns live in `db.PERMANENT_FAILURES`.
 ## Inspecting the library
 
 ```
-sqlite3 data/memebrowser.db
+sqlite3 data/memeline.db
 sqlite> SELECT collection, status, COUNT(*) FROM media GROUP BY 1, 2;
 sqlite> SELECT id, substr(caption, 1, 100) FROM media WHERE status = 'failed' LIMIT 20;
 ```

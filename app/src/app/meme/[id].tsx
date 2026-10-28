@@ -68,18 +68,29 @@ export default function MemeScreen() {
 
 const styles = StyleSheet.create({
   info: { padding: Spacing.three, gap: Spacing.two },
-  title: { fontFamily: Fonts.heading, fontSize: 28, color: Colors.text },
+  title: {
+    fontFamily: Fonts.heading,
+    textTransform: 'uppercase',
+    fontSize: 28,
+    color: Colors.text,
+  },
   meta: { fontFamily: Fonts.body, fontSize: 14, color: Colors.textSecondary },
   summary: { fontFamily: Fonts.body, fontSize: 16, lineHeight: 23, color: Colors.text },
-  heading: { fontFamily: Fonts.heading, fontSize: 18, color: Colors.accent, marginTop: Spacing.three },
+  heading: {
+    fontFamily: Fonts.heading,
+    textTransform: 'uppercase',
+    fontSize: 18,
+    color: Colors.accent,
+    marginTop: Spacing.three,
+  },
   event: {
     padding: Spacing.three,
     backgroundColor: Colors.surface,
     borderRadius: 8,
     borderLeftWidth: 3,
-    borderLeftColor: Colors.blue,
+    borderLeftColor: Colors.cyan,
     gap: 2,
   },
-  eventTitle: { fontFamily: Fonts.bodyBold, fontSize: 16, color: Colors.blue },
+  eventTitle: { fontFamily: Fonts.bodyBold, fontSize: 16, color: Colors.cyan },
   note: { fontFamily: Fonts.body, fontSize: 14, color: Colors.text },
 });

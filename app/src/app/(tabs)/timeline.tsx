@@ -3,6 +3,7 @@ import { useSQLiteContext } from 'expo-sqlite';
 import { useCallback, useMemo, useState } from 'react';
 import { Pressable, SectionList, StyleSheet, Text, View } from 'react-native';
 
+import { Hitmarker } from '@/components/hitmarker';
 import { Chip, ScreenHeader } from '@/components/ui';
 import { Colors, Fonts, Spacing } from '@/constants/theme';
 import { listTimeline, type TimelineEntry } from '@/db/timeline';
@@ -68,7 +69,13 @@ export default function TimelineScreen() {
               })
             }>
             <View style={styles.rail}>
-              <View style={[styles.dot, item.kind === 'event' && styles.eventDot]} />
+              {item.kind === 'meme' ? (
+                <View style={styles.marker}>
+                  <Hitmarker size={18} color={Colors.accent} />
+                </View>
+              ) : (
+                <View style={styles.eventDot} />
+              )}
             </View>
             <View style={styles.body}>
               <Text style={styles.meta}>
@@ -95,6 +102,7 @@ const styles = StyleSheet.create({
   filters: { flexDirection: 'row', gap: Spacing.two, padding: Spacing.three },
   year: {
     fontFamily: Fonts.heading,
+    textTransform: 'uppercase',
     fontSize: 22,
     color: Colors.accent,
     backgroundColor: Colors.background,
@@ -102,7 +110,7 @@ const styles = StyleSheet.create({
     paddingVertical: Spacing.two,
   },
   row: { flexDirection: 'row', paddingHorizontal: Spacing.three },
-  // a vertical line down the left, with a dot per entry
+  // a vertical line down the left: a hitmarker per meme, a ring per event
   rail: {
     width: 20,
     alignItems: 'center',
@@ -110,19 +118,21 @@ const styles = StyleSheet.create({
     borderLeftColor: Colors.border,
     marginLeft: 5,
   },
-  dot: {
+  marker: { position: 'absolute', left: -10, top: Spacing.three - 3 },
+  eventDot: {
     position: 'absolute',
     left: -7,
     top: Spacing.three,
     width: 12,
     height: 12,
     borderRadius: 6,
-    backgroundColor: Colors.accent,
+    backgroundColor: Colors.background,
+    borderWidth: 2,
+    borderColor: Colors.cyan,
   },
-  eventDot: { backgroundColor: Colors.background, borderWidth: 2, borderColor: Colors.blue },
   body: { flex: 1, paddingVertical: Spacing.two + 2, gap: 2 },
   meta: { fontFamily: Fonts.body, fontSize: 13, color: Colors.textSecondary },
   memeTitle: { fontFamily: Fonts.bodyBold, fontSize: 17, color: Colors.text },
-  eventTitle: { fontFamily: Fonts.body, fontSize: 16, color: Colors.blue },
+  eventTitle: { fontFamily: Fonts.body, fontSize: 16, color: Colors.cyan },
   count: { fontFamily: Fonts.bodyBold, fontSize: 13, color: Colors.gold },
 });

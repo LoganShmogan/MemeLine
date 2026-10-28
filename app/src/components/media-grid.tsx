@@ -14,10 +14,10 @@ const GAP = 2;
 
 // shown when there's no picture to draw: text notes, links, failed video grabs
 const GLYPH: Record<MediaType, { glyph: string; color: string }> = {
-  image: { glyph: '▣', color: Colors.blue },
+  image: { glyph: '▣', color: Colors.cyan },
   video: { glyph: '▶', color: Colors.accent },
   text: { glyph: '¶', color: Colors.gold },
-  link: { glyph: '↗', color: Colors.green },
+  link: { glyph: '↗', color: Colors.orange },
 };
 
 /** Reloads every time its screen gains focus, so edits made elsewhere show up. */
@@ -113,6 +113,18 @@ const styles = StyleSheet.create({
     fontSize: 11,
     color: Colors.textSecondary,
   },
-  badge: { position: 'absolute', bottom: Spacing.one, left: Spacing.two, color: Colors.text, fontSize: 12 },
-  star: { position: 'absolute', top: Spacing.one, right: Spacing.two, color: Colors.gold, fontSize: 14 },
+  badge: {
+    position: 'absolute',
+    bottom: Spacing.one,
+    left: Spacing.two,
+    color: Colors.text,
+    fontSize: 12,
+  },
+  star: {
+    position: 'absolute',
+    top: Spacing.one,
+    right: Spacing.two,
+    color: Colors.gold,
+    fontSize: 14,
+  },
 });

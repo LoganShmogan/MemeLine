@@ -5,12 +5,12 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
-from memebrowser import db
-from memebrowser.importers import tiktok_export
+from memeline import db
+from memeline.importers import tiktok_export
 
 
 def main():
-    ap = argparse.ArgumentParser(description="Import a TikTok data-export JSON into MemeBrowser's library.")
+    ap = argparse.ArgumentParser(description="Import a TikTok data-export JSON into MemeLine's library.")
     ap.add_argument("json_path", help="Path to the TikTok export .json file")
     ap.add_argument("--include-all", action="store_true",
                      help="Also import link lists that couldn't be classified as Likes/Favorites/Posts")

@@ -1,6 +1,6 @@
-# Memeline Community Guidelines
+# MemeLine Community Guidelines
 
-Memeline is for sharing memes, talking about where they came from, and
+MemeLine is for sharing memes, talking about where they came from, and
 what was happening in the world when they took off. Some of those
 events are tragedies that real people lived through. Joke about memes, not
 about the people who were hurt.

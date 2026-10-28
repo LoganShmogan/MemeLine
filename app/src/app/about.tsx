@@ -2,8 +2,9 @@ import Constants from 'expo-constants';
 import * as WebBrowser from 'expo-web-browser';
 import { Pressable, ScrollView, StyleSheet, Text } from 'react-native';
 
-import { Colors, Fonts, Spacing } from '@/constants/theme';
+import { Wordmark } from '@/components/wordmark';
 import { Company, LegalUrls } from '@/constants/legal';
+import { Colors, Fonts, Spacing } from '@/constants/theme';
 
 const LINKS = [
   { label: 'Privacy Policy', url: LegalUrls.privacy },
@@ -14,7 +15,7 @@ const LINKS = [
 export default function AboutScreen() {
   return (
     <ScrollView contentContainerStyle={styles.page}>
-      <Text style={styles.name}>Memeline</Text>
+      <Wordmark />
       <Text style={styles.meta}>Version {Constants.expoConfig?.version}</Text>
       <Text style={styles.body}>
         Save the memes you love, and see where they came from and what was happening in the
@@ -39,7 +40,7 @@ export default function AboutScreen() {
 
       <Text style={styles.fine}>
         © {new Date().getFullYear()} {Company.name}. Memes, images and trademarks mentioned in
-        Memeline belong to their respective owners.
+        MemeLine belong to their respective owners.
       </Text>
     </ScrollView>
   );
@@ -47,11 +48,11 @@ export default function AboutScreen() {
 
 const styles = StyleSheet.create({
   page: { padding: Spacing.three, gap: Spacing.two, paddingBottom: Spacing.six },
-  name: { fontFamily: Fonts.heading, fontSize: 36, color: Colors.text },
   meta: { fontFamily: Fonts.body, fontSize: 14, color: Colors.textSecondary },
   body: { fontFamily: Fonts.body, fontSize: 16, lineHeight: 23, color: Colors.text },
   maker: {
     fontFamily: Fonts.heading,
+    textTransform: 'uppercase',
     fontSize: 16,
     color: Colors.text,
     marginVertical: Spacing.three,

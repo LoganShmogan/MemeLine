@@ -1,6 +1,6 @@
 # Architecture
 
-MemeBrowser is a single-process Python desktop app plus two command-line
+MemeLine is a single-process Python desktop app plus two command-line
 scripts that share one SQLite database and one media folder. There is no
 server, no network service and no background worker: the scripts fill the
 library, and the app only reads it (except for "+ Add", which writes manual
@@ -16,7 +16,7 @@ items).
                                     |
                                     v  rows with status = 'pending'
                          +----------------------+
-                         |  data/memebrowser.db |  <-- db.py is the only
+                         |  data/memeline.db |  <-- db.py is the only
                          |  (SQLite, 1 table)   |      module that runs SQL
                          +----------------------+
                                     ^  status -> 'downloaded' / 'failed'
@@ -36,12 +36,12 @@ items).
 | Module | Responsibility |
 |---|---|
 | `main.py` | Entry point; calls `ui.app.main()`. |
-| `memebrowser/config.py` | Paths, screen size, fullscreen flag, the list of collection tabs. Creates `data/`, `data/media/`, `data/thumbnails/`, `data/covers/` on import. |
-| `memebrowser/db.py` | Schema and every query. Other modules never write SQL. |
-| `memebrowser/importers/tiktok_export.py` | Turns the export JSON into a list of row dicts. Pure function, no DB access. |
-| `memebrowser/importers/downloader.py` | Runs yt-dlp per pending row, keeps the cover and makes a small thumbnail, records the outcome. |
-| `memebrowser/thumbnails.py` | `save_thumbnail()`: shrink any image to `config.THUMB_SIZE` (200px). Used by the downloader, "+ Add" and `scripts/rebuild_thumbnails.py`. |
-| `memebrowser/ui/*` | Tkinter screens. See [ui.md](ui.md). |
+| `memeline/config.py` | Paths, screen size, fullscreen flag, the list of collection tabs. Creates `data/`, `data/media/`, `data/thumbnails/`, `data/covers/` on import. |
+| `memeline/db.py` | Schema and every query. Other modules never write SQL. |
+| `memeline/importers/tiktok_export.py` | Turns the export JSON into a list of row dicts. Pure function, no DB access. |
+| `memeline/importers/downloader.py` | Runs yt-dlp per pending row, keeps the cover and makes a small thumbnail, records the outcome. |
+| `memeline/thumbnails.py` | `save_thumbnail()`: shrink any image to `config.THUMB_SIZE` (200px). Used by the downloader, "+ Add" and `scripts/rebuild_thumbnails.py`. |
+| `memeline/ui/*` | Tkinter screens. See [ui.md](ui.md). |
 | `scripts/*.py` | Thin argparse wrappers so the importer/downloader can run headless (over SSH on the Pi). |
 | `pi-setup/` | X session and systemd unit for booting straight into the app. See [raspberry-pi.md](raspberry-pi.md). |
 

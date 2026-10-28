@@ -1,4 +1,16 @@
-# MemeBrowser
+# MemeLine
+
+MemeLine, by Save Point Limited, is a community site and app for memes.
+Users post memes, vote on them and discuss them, and a timeline shows when
+each meme took off alongside the world events of the time. The website,
+iOS app and Android app are one Expo codebase in [`app/`](app/README.md).
+The plan is in [app/docs/plan.md](app/docs/plan.md) and the legal drafts
+are in [legal/](legal/README.md).
+
+## Legacy: the Raspberry Pi app
+
+Everything below describes where MemeLine started, and the Python code in
+the repo root. It's kept for reference and isn't part of the new product.
 
 A touchscreen media browser for a Raspberry Pi 3B+ with the official Pi
 Touch Display 2, in a 3D-printed case. It holds your saved TikTok videos
@@ -39,8 +51,8 @@ System packages needed: `python3-tk`, `vlc` (libVLC) and, optionally,
 ## Repository layout
 
 ```
-main.py                       entry point -> memebrowser.ui.app.main()
-memebrowser/
+main.py                       entry point -> memeline.ui.app.main()
+memeline/
   config.py                   paths, screen size, fullscreen flag, collection tabs
   db.py                       SQLite schema + every query
   thumbnails.py               save_thumbnail(): shrink an image to tile size
@@ -59,11 +71,11 @@ scripts/
   rebuild_thumbnails.py       one-off: shrink old full-size thumbnails
 pi-setup/
   xinitrc                     minimal X session that runs the app
-  memebrowser.service         systemd unit to boot into it
+  memeline.service         systemd unit to boot into it
 assets/fonts/                 Chakra Petch + Figtree (install with fc-cache)
 docs/                         see the table above
 *.stl                         enclosure parts (back, back v2, top, hinge)
-data/                         git-ignored: memebrowser.db, media/, thumbnails/, covers/
+data/                         git-ignored: memeline.db, media/, thumbnails/, covers/
 ```
 
 ## Status (2026-10-17)

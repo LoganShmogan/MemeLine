@@ -109,5 +109,10 @@ const styles = StyleSheet.create({
   },
   coverGlyph: { fontSize: 24, color: Colors.accent },
   name: { flex: 1, fontFamily: Fonts.bodyBold, fontSize: 17, color: Colors.text },
-  count: { fontFamily: Fonts.heading, fontSize: 15, color: Colors.textSecondary },
+  count: {
+    fontFamily: Fonts.heading,
+    textTransform: 'uppercase',
+    fontSize: 15,
+    color: Colors.textSecondary,
+  },
 });
