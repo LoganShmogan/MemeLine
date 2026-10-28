@@ -10,6 +10,8 @@ root, which is now legacy.
 - **Favourites**: star anything from the viewer.
 - **Folders**: create, rename and delete folders. One item can be in any
   number of folders.
+- **Timeline**: memes and world events by year. Tag library items with the
+  memes they are, and see them on each meme's page.
 
 ## Run it
 
@@ -29,8 +31,11 @@ Before committing, run `npx tsc --noEmit` and `npx expo lint`.
 
 ```
 src/app/            screens (Expo Router: every file is a route)
-  (tabs)/           Library, Favourites, Folders
-  media/[id].tsx    viewer: Prev/Next, ★, folder toggles, delete
+  (tabs)/           Library, Timeline, Favourites, Folders
+  media/[id].tsx    viewer: Prev/Next, ★, folder toggles, meme tags, delete
+  meme/[id].tsx     a meme, its linked events, library items tagged with it
+  event/[id].tsx    a world event and its linked memes
+  tag-meme.tsx      modal: search memes and tag the open item
   folder/[id].tsx   one folder's grid, rename, delete
   add.tsx           modal: photos & videos / link / note
 src/db/schema.ts    SQLite migrations (PRAGMA user_version)
@@ -55,7 +60,7 @@ src/constants/theme.ts  brand colours and fonts (same as savepoint.cc)
 
 ## Meme timeline data
 
-The timeline (not built as a screen yet) puts memes next to world events.
+The timeline puts memes next to world events.
 Its data is curated by hand in `src/data/timeline.json` and ships with the
 app:
 

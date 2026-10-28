@@ -176,13 +176,23 @@ export function memesOfEvent(db: SQLiteDatabase, eventId: string): Promise<Meme[
 
 // ---- tagging library items with memes ----
 
-/** Ids of the memes an item is tagged with. */
-export async function memesOf(db: SQLiteDatabase, mediaId: number): Promise<Set<string>> {
-  const rows = await db.getAllAsync<{ meme_id: string }>(
-    'SELECT meme_id FROM media_memes WHERE media_id = ?',
+/** Every meme, A-Z, for picking one to tag an item with. */
+export function listMemes(db: SQLiteDatabase): Promise<Meme[]> {
+  return db.getAllAsync<Meme>(
+    `SELECT m.*, s.name AS style FROM memes m LEFT JOIN meme_styles s ON s.id = m.style_id
+     ORDER BY m.name COLLATE NOCASE`
+  );
+}
+
+/** The memes an item is tagged with, oldest first. */
+export function memesOfMedia(db: SQLiteDatabase, mediaId: number): Promise<Meme[]> {
+  return db.getAllAsync<Meme>(
+    `SELECT m.*, s.name AS style FROM memes m
+     JOIN media_memes mm ON mm.meme_id = m.id
+     LEFT JOIN meme_styles s ON s.id = m.style_id
+     WHERE mm.media_id = ? ORDER BY m.date`,
     mediaId
   );
-  return new Set(rows.map((r) => r.meme_id));
 }
 
 export async function setMemeTag(

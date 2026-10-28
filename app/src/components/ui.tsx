@@ -48,6 +48,15 @@ export function Button({
   );
 }
 
+/** A pill toggle: outlined when off, filled when on. */
+export function Chip({ label, on, onPress }: { label: string; on: boolean; onPress: () => void }) {
+  return (
+    <Pressable onPress={onPress} style={[styles.chip, on && styles.chipOn]}>
+      <Text style={[styles.chipLabel, on && { color: Colors.background }]}>{label}</Text>
+    </Pressable>
+  );
+}
+
 export function Input(props: TextInputProps) {
   return (
     <TextInput
@@ -93,6 +102,15 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   buttonLabel: { fontFamily: Fonts.heading, fontSize: 15, letterSpacing: 0.5 },
+  chip: {
+    borderColor: Colors.accent,
+    borderWidth: 1,
+    borderRadius: 16,
+    paddingHorizontal: Spacing.three,
+    paddingVertical: Spacing.one + 2,
+  },
+  chipOn: { backgroundColor: Colors.accent },
+  chipLabel: { fontFamily: Fonts.bodyBold, fontSize: 14, color: Colors.accent },
   input: {
     fontFamily: Fonts.body,
     fontSize: 16,

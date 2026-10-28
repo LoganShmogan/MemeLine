@@ -16,6 +16,11 @@ export default function TabLayout() {
         />
       </NativeTabs.Trigger>
 
+      <NativeTabs.Trigger name="timeline">
+        <NativeTabs.Trigger.Label>Timeline</NativeTabs.Trigger.Label>
+        <NativeTabs.Trigger.Icon sf={{ default: 'clock', selected: 'clock.fill' }} md="timeline" />
+      </NativeTabs.Trigger>
+
       <NativeTabs.Trigger name="favorites">
         <NativeTabs.Trigger.Label>Favourites</NativeTabs.Trigger.Label>
         <NativeTabs.Trigger.Icon sf={{ default: 'star', selected: 'star.fill' }} md="star" />

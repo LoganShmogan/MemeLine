@@ -1,12 +1,12 @@
 import { Image } from 'expo-image';
-import { Stack, useLocalSearchParams, useRouter } from 'expo-router';
+import { Stack, useFocusEffect, useLocalSearchParams, useRouter } from 'expo-router';
 import { useSQLiteContext } from 'expo-sqlite';
 import { useVideoPlayer, VideoView } from 'expo-video';
 import * as WebBrowser from 'expo-web-browser';
 import { useCallback, useEffect, useState } from 'react';
 import { Alert, Pressable, ScrollView, StyleSheet, Text, useWindowDimensions, View } from 'react-native';
 
-import { Button } from '@/components/ui';
+import { Button, Chip } from '@/components/ui';
 import { Colors, Fonts, Spacing } from '@/constants/theme';
 import {
   deleteMedia,
@@ -19,11 +19,12 @@ import {
   setFavorite,
   setInFolder,
 } from '@/db/library';
+import { type Meme, memesOfMedia } from '@/db/timeline';
 import { deleteFiles, mediaUri } from '@/lib/storage';
 
 /**
  * One item, with Prev/Next through the grid it was opened from (the `scope`
- * param), a favourite star and folder membership toggles.
+ * param), a favourite star, folder membership toggles and meme tags.
  */
 export default function ViewerScreen() {
   const db = useSQLiteContext();
@@ -33,6 +34,7 @@ export default function ViewerScreen() {
   const [index, setIndex] = useState(-1);
   const [folders, setFolders] = useState<Folder[]>([]);
   const [memberOf, setMemberOf] = useState<Set<number>>(new Set());
+  const [memes, setMemes] = useState<Meme[]>([]);
   const item = items[index];
 
   useEffect(() => {
@@ -47,6 +49,14 @@ export default function ViewerScreen() {
   useEffect(() => {
     if (item) foldersOf(db, item.id).then(setMemberOf);
   }, [db, item]);
+
+  // on focus too, to pick up changes made in the tag-meme modal
+  const itemId = item?.id;
+  useFocusEffect(
+    useCallback(() => {
+      if (itemId !== undefined) memesOfMedia(db, itemId).then(setMemes);
+    }, [db, itemId])
+  );
 
   const patch = useCallback(
     (changes: Partial<Media>) =>
@@ -127,19 +137,37 @@ export default function ViewerScreen() {
               {folders.map((f) => {
                 const on = memberOf.has(f.id);
                 return (
-                  <Pressable
+                  <Chip
                     key={f.id}
+                    label={`${on ? '✓ ' : ''}${f.name}`}
+                    on={on}
                     onPress={() => toggleFolder(f.id)}
-                    style={[styles.chip, on && styles.chipOn]}>
-                    <Text style={[styles.chipLabel, on && { color: Colors.background }]}>
-                      {on ? '✓ ' : ''}
-                      {f.name}
-                    </Text>
-                  </Pressable>
+                  />
                 );
               })}
             </View>
           )}
+        </View>
+
+        <View style={styles.section}>
+          <Text style={styles.heading}>Memes</Text>
+          {memes.length > 0 && (
+            <View style={styles.chips}>
+              {memes.map((m) => (
+                <Chip
+                  key={m.id}
+                  label={m.name}
+                  on
+                  onPress={() => router.push({ pathname: '/meme/[id]', params: { id: m.id } })}
+                />
+              ))}
+            </View>
+          )}
+          <Button
+            label={memes.length ? 'Edit memes' : 'Tag a meme'}
+            variant="outline"
+            onPress={() => router.push({ pathname: '/tag-meme', params: { mediaId: item.id } })}
+          />
         </View>
 
         <View style={styles.section}>
@@ -206,15 +234,6 @@ const styles = StyleSheet.create({
   meta: { fontFamily: Fonts.body, fontSize: 14, color: Colors.textSecondary },
   heading: { fontFamily: Fonts.heading, fontSize: 18, color: Colors.accent },
   chips: { flexDirection: 'row', flexWrap: 'wrap', gap: Spacing.two },
-  chip: {
-    borderColor: Colors.accent,
-    borderWidth: 1,
-    borderRadius: 16,
-    paddingHorizontal: Spacing.three,
-    paddingVertical: Spacing.one + 2,
-  },
-  chipOn: { backgroundColor: Colors.accent },
-  chipLabel: { fontFamily: Fonts.bodyBold, fontSize: 14, color: Colors.accent },
   noteBox: {
     margin: Spacing.three,
     padding: Spacing.four,

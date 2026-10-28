@@ -54,6 +54,9 @@ export default function RootLayout() {
           <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
           <Stack.Screen name="media/[id]" options={{ title: '' }} />
           <Stack.Screen name="folder/[id]" options={{ title: '' }} />
+          <Stack.Screen name="meme/[id]" options={{ title: '' }} />
+          <Stack.Screen name="event/[id]" options={{ title: '' }} />
+          <Stack.Screen name="tag-meme" options={{ title: 'Memes', presentation: 'modal' }} />
           <Stack.Screen name="add" options={{ title: 'Add', presentation: 'modal' }} />
         </Stack>
       </ThemeProvider>
