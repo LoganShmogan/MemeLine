@@ -44,6 +44,68 @@ const MIGRATIONS: string[] = [
   );
   CREATE INDEX idx_media_folders_folder ON media_folders(folder_id);
   `,
+  /*
+   * The meme timeline. memes, events, meme_styles and meme_events are
+   * reference data bundled with the app (src/data/timeline.json) and
+   * re-synced by db/timeline.ts whenever the bundled version changes; only
+   * media_memes is the user's own data.
+   *
+   * - ids are text slugs ('rickroll'), not autoincrement, so a data update
+   *   can upsert by id and the user's media_memes links keep pointing at the
+   *   same meme.
+   * - dates are ISO prefixes: '2007', '2007-05' or '2007-05-15', as precise
+   *   as the source allows. They sort correctly as text and the length gives
+   *   the precision, so no separate precision column.
+   * - a meme's date is when it took off as a meme, not when its source
+   *   material was made (Doge is 2013, not the 2010 photo); `summary` says
+   *   which.
+   */
+  `
+  CREATE TABLE meme_styles (
+    id TEXT PRIMARY KEY,
+    name TEXT NOT NULL,
+    description TEXT
+  );
+
+  CREATE TABLE memes (
+    id TEXT PRIMARY KEY,
+    name TEXT NOT NULL,
+    date TEXT NOT NULL,
+    style_id TEXT REFERENCES meme_styles(id),
+    platform TEXT,
+    summary TEXT
+  );
+  CREATE INDEX idx_memes_date ON memes(date);
+
+  CREATE TABLE events (
+    id TEXT PRIMARY KEY,
+    title TEXT NOT NULL,
+    date TEXT NOT NULL,
+    category TEXT,
+    summary TEXT
+  );
+  CREATE INDEX idx_events_date ON events(date);
+
+  CREATE TABLE meme_events (
+    meme_id TEXT NOT NULL REFERENCES memes(id) ON DELETE CASCADE,
+    event_id TEXT NOT NULL REFERENCES events(id) ON DELETE CASCADE,
+    note TEXT,
+    PRIMARY KEY (meme_id, event_id)
+  );
+  CREATE INDEX idx_meme_events_event ON meme_events(event_id);
+
+  CREATE TABLE media_memes (
+    media_id INTEGER NOT NULL REFERENCES media(id) ON DELETE CASCADE,
+    meme_id TEXT NOT NULL REFERENCES memes(id) ON DELETE CASCADE,
+    PRIMARY KEY (media_id, meme_id)
+  );
+  CREATE INDEX idx_media_memes_meme ON media_memes(meme_id);
+
+  CREATE TABLE app_meta (
+    key TEXT PRIMARY KEY,
+    value TEXT NOT NULL
+  );
+  `,
 ];
 
 export async function migrate(db: SQLiteDatabase) {

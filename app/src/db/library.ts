@@ -32,7 +32,11 @@ export type Folder = {
 };
 
 /** Which items a grid shows. */
-export type Scope = { kind: 'all' } | { kind: 'favorites' } | { kind: 'folder'; folderId: number };
+export type Scope =
+  | { kind: 'all' }
+  | { kind: 'favorites' }
+  | { kind: 'folder'; folderId: number }
+  | { kind: 'meme'; memeId: string };
 
 // ---- media ----
 
@@ -50,6 +54,12 @@ export async function listMedia(db: SQLiteDatabase, scope: Scope): Promise<Media
         `SELECT m.* FROM media m JOIN media_folders mf ON mf.media_id = m.id
          WHERE mf.folder_id = ? ORDER BY mf.date_added DESC, m.id DESC`,
         scope.folderId
+      );
+    case 'meme':
+      return db.getAllAsync<Media>(
+        `SELECT m.* FROM media m JOIN media_memes mm ON mm.media_id = m.id
+         WHERE mm.meme_id = ? ORDER BY m.date_added DESC, m.id DESC`,
+        scope.memeId
       );
   }
 }

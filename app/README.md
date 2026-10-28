@@ -34,7 +34,9 @@ src/app/            screens (Expo Router: every file is a route)
   folder/[id].tsx   one folder's grid, rename, delete
   add.tsx           modal: photos & videos / link / note
 src/db/schema.ts    SQLite migrations (PRAGMA user_version)
-src/db/library.ts   every query
+src/db/library.ts   library and folder queries
+src/db/timeline.ts  syncing the bundled meme/event data, timeline queries
+src/data/timeline.json  the curated memes, world events and styles
 src/lib/storage.ts  copying picked files into app storage, thumbnails
 src/components/     grid + shared branded UI
 src/constants/theme.ts  brand colours and fonts (same as savepoint.cc)
@@ -50,3 +52,29 @@ src/constants/theme.ts  brand colours and fonts (same as savepoint.cc)
   item cascades its links away.
 - Schema changes go in a new entry at the end of `MIGRATIONS` in
   `src/db/schema.ts`. Never edit one that has shipped.
+
+## Meme timeline data
+
+The timeline (not built as a screen yet) puts memes next to world events.
+Its data is curated by hand in `src/data/timeline.json` and ships with the
+app:
+
+- `styles`: meme formats (image macro, challenge, template...).
+- `events`: world, internet and culture events.
+- `memes`: each with a `style`, and optional `events` it's linked to, with a
+  `note` saying why.
+
+On launch, `syncTimeline` copies it into the `memes`, `events`,
+`meme_styles` and `meme_events` tables if the file's `version` has changed.
+**Bump `version` on every edit** or installed apps won't pick it up.
+
+- Ids are text slugs and never change once shipped: rows are upserted by id,
+  so the user's tags (`media_memes`) survive data updates. Removing a meme
+  also removes the user's tags on it.
+- Dates are ISO prefixes (`2007`, `2007-05`, `2007-05-15`), as precise as the
+  source allows. A year-only date sorts at the start of its year.
+- A meme's date is when it took off as a meme, not when its source was made;
+  the `summary` mentions the original date where they differ.
+- The current 34 memes and 21 events are a starter set. Check them before
+  release.
+

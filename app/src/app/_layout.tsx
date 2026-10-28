@@ -1,14 +1,20 @@
 import { useFonts } from 'expo-font';
 import { DarkTheme, Stack, ThemeProvider } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
-import { SQLiteProvider } from 'expo-sqlite';
+import { SQLiteProvider, type SQLiteDatabase } from 'expo-sqlite';
 import { StatusBar } from 'expo-status-bar';
 import { useEffect } from 'react';
 
 import { Colors, Fonts } from '@/constants/theme';
 import { migrate } from '@/db/schema';
+import { syncTimeline } from '@/db/timeline';
 
 SplashScreen.preventAutoHideAsync();
+
+async function initDatabase(db: SQLiteDatabase) {
+  await migrate(db);
+  await syncTimeline(db);
+}
 
 const theme = {
   ...DarkTheme,
@@ -36,7 +42,7 @@ export default function RootLayout() {
   if (!fontsLoaded) return null;
 
   return (
-    <SQLiteProvider databaseName="memebrowser.db" onInit={migrate}>
+    <SQLiteProvider databaseName="memebrowser.db" onInit={initDatabase}>
       <ThemeProvider value={theme}>
         <StatusBar style="light" />
         <Stack
