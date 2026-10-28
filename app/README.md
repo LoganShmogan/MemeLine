@@ -1,6 +1,6 @@
-# MemeBrowser (mobile)
+# Memeline
 
-The mobile-first MemeBrowser app: Expo + React Native, targeting the iOS
+Memeline, by Save Point Limited: Expo + React Native, targeting the iOS
 App Store and Google Play. It replaces the Python/Tkinter Pi app in the repo
 root, which is now legacy.
 
@@ -38,6 +38,7 @@ src/app/            screens (Expo Router: every file is a route)
   tag-meme.tsx      modal: search memes and tag the open item
   folder/[id].tsx   one folder's grid, rename, delete
   add.tsx           modal: photos & videos / link / note
+  about.tsx         version, credit, links to the legal pages
 src/db/schema.ts    SQLite migrations (PRAGMA user_version)
 src/db/library.ts   library and folder queries
 src/db/timeline.ts  syncing the bundled meme/event data, timeline queries
@@ -45,6 +46,7 @@ src/data/timeline.json  the curated memes, world events and styles
 src/lib/storage.ts  copying picked files into app storage, thumbnails
 src/components/     grid + shared branded UI
 src/constants/theme.ts  brand colours and fonts (same as savepoint.cc)
+src/constants/legal.ts  public URLs of the legal pages (source text in ../legal/)
 ```
 
 ## Data model

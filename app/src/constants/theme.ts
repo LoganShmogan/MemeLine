@@ -1,5 +1,5 @@
 /**
- * MemeBrowser brand: the same black / lavender look as savepoint.cc and
+ * Memeline brand, by Save Point: the same black / lavender look as savepoint.cc and
  * loganyoung.foo. The app is dark-only, so there is one palette.
  */
 

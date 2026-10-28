@@ -1,15 +1,15 @@
 {
   "expo": {
-    "name": "MemeBrowser",
-    "slug": "memebrowser",
+    "name": "Memeline",
+    "slug": "memeline",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
-    "scheme": "memebrowser",
+    "scheme": "memeline",
     "userInterfaceStyle": "dark",
     "ios": {
       "icon": "./assets/expo.icon",
-      "bundleIdentifier": "cc.savepoint.memebrowser"
+      "bundleIdentifier": "cc.savepoint.memeline"
     },
     "android": {
       "adaptiveIcon": {
@@ -19,7 +19,7 @@
         "monochromeImage": "./assets/images/android-icon-monochrome.png"
       },
       "predictiveBackGestureEnabled": false,
-      "package": "cc.savepoint.memebrowser"
+      "package": "cc.savepoint.memeline"
     },
     "web": {
       "output": "server",
@@ -40,7 +40,7 @@
       [
         "expo-image-picker",
         {
-          "photosPermission": "MemeBrowser needs your photos so you can add memes to your library.",
+          "photosPermission": "Memeline needs your photos so you can add memes to your library.",
           "cameraPermission": false,
           "microphonePermission": false
         }

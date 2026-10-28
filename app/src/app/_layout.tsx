@@ -42,7 +42,7 @@ export default function RootLayout() {
   if (!fontsLoaded) return null;
 
   return (
-    <SQLiteProvider databaseName="memebrowser.db" onInit={initDatabase}>
+    <SQLiteProvider databaseName="memeline.db" onInit={initDatabase}>
       <ThemeProvider value={theme}>
         <StatusBar style="light" />
         <Stack
@@ -57,6 +57,7 @@ export default function RootLayout() {
           <Stack.Screen name="meme/[id]" options={{ title: '' }} />
           <Stack.Screen name="event/[id]" options={{ title: '' }} />
           <Stack.Screen name="tag-meme" options={{ title: 'Memes', presentation: 'modal' }} />
+          <Stack.Screen name="about" options={{ title: 'About' }} />
           <Stack.Screen name="add" options={{ title: 'Add', presentation: 'modal' }} />
         </Stack>
       </ThemeProvider>

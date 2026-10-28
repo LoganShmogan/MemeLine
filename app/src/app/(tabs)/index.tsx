@@ -1,8 +1,9 @@
 import { useRouter } from 'expo-router';
-import { View } from 'react-native';
+import { Pressable, Text, View } from 'react-native';
 
 import { MediaGrid } from '@/components/media-grid';
 import { Button, ScreenHeader } from '@/components/ui';
+import { Colors, Spacing } from '@/constants/theme';
 
 export default function LibraryScreen() {
   const router = useRouter();
@@ -10,7 +11,14 @@ export default function LibraryScreen() {
     <View style={{ flex: 1 }}>
       <ScreenHeader
         title="Library"
-        action={<Button label="+ Add" onPress={() => router.push('/add')} />}
+        action={
+          <View style={{ flexDirection: 'row', alignItems: 'center', gap: Spacing.three }}>
+            <Pressable onPress={() => router.push('/about')} hitSlop={12} accessibilityLabel="About Memeline">
+              <Text style={{ fontSize: 22, color: Colors.textSecondary }}>ⓘ</Text>
+            </Pressable>
+            <Button label="+ Add" onPress={() => router.push('/add')} />
+          </View>
+        }
       />
       <MediaGrid
         scope={{ kind: 'all' }}
