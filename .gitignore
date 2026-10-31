@@ -4,3 +4,13 @@ __pycache__/
 venv/
 .venv/
 download*.log
+
+# Secrets: never commit these
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.jks
+*service-account*.json
+cookies*.txt

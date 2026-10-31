@@ -14,6 +14,7 @@
   <a href="app/docs/plan.md">Plan</a> ·
   <a href="legal/README.md">Legal</a> ·
   <a href="docs/">Legacy docs</a> ·
+  <a href="SECURITY.md">Security</a> ·
   <a href="LICENSE">Licence</a>
 </p>
 
@@ -32,6 +33,34 @@ The website, iOS app and Android app are one **Expo Router** codebase in [`app/`
 - **🔐 Sign in with Apple or Google.** No passwords to manage.
 
 The full product plan, including the Firestore data model and Cloud Functions, is in [app/docs/plan.md](app/docs/plan.md).
+
+## Project layout
+
+```
+MemeLine/
+├── app/                    # The MemeLine site and apps (Expo Router + Firebase)
+│   ├── src/                # app/ routes, components/, constants/, data/, db/, lib/
+│   ├── assets/             # Images and fonts for the app
+│   ├── docs/plan.md        # Product plan and roadmap
+│   ├── app.json            # Expo config
+│   └── package.json
+├── legal/                  # Terms of use, privacy policy, community guidelines (drafts)
+├── memeline/               # Legacy Raspberry Pi app (Python + Tkinter + VLC)
+│   ├── importers/          # TikTok export importer, yt-dlp downloader
+│   ├── ui/                 # Gallery, viewer, add-media screens
+│   └── config.py  db.py  thumbnails.py
+├── scripts/                # Legacy CLIs: import, download, rebuild thumbnails
+├── pi-setup/               # Legacy: xinitrc + systemd unit to boot into the app
+├── docs/                   # Legacy Pi app docs
+├── assets/fonts/           # Chakra Petch + Figtree
+├── *.stl                   # 3D-printed touchscreen enclosure parts
+├── main.py                 # Legacy app entry point
+├── requirements.txt
+├── LICENSE                 # Proprietary, all rights reserved
+└── SECURITY.md
+```
+
+`data/` (the legacy app's database, media and thumbnails) and every `.env*` file are git-ignored.
 
 ## Quick start (Save Point staff)
 
